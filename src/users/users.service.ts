@@ -17,4 +17,8 @@ export class UsersService {
     const newUser = new this.modelo({ ...userDTO, password: hash });
     return await newUser.save();
   }
+
+  async todos(): Promise<IUser[]> {
+    return await this.modelo.find();
+  }
 }

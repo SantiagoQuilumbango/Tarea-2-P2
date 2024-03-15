@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDTO } from './dto/user.dto';
 
@@ -9,5 +9,9 @@ export class UsersController {
   @Post()
   insertar(@Body() userDTO: UserDTO) {
     return this.userService.insertar(userDTO);
+  }
+  @Get()
+  todos() {
+    return this.userService.todos();
   }
 }
