@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -10,18 +12,21 @@ import {
 import { VuelosService } from './vuelos.service';
 import { PassengerService } from 'src/passenger/passenger.service';
 import { VuelosDTO } from './dto/vuelos.dto';
-
-@Controller('vuelos')
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+@ApiTags('vuelos')
+@Controller('api/v1/vuelos')
 export class VuelosController {
   constructor(
     private readonly vuelosService: VuelosService,
     private readonly passengerService: PassengerService,
   ) {}
   @Post()
+  @ApiOperation({ summary: 'Crea Vuelos' })
   insertar(@Body() vuelosDTO: VuelosDTO) {
     return this.vuelosService.insertar(vuelosDTO);
   }
   @Get()
+  @ApiOperation({ summary: 'Selecciona todos los Vuelos' })
   todos() {
     return this.vuelosService.todos();
   }
@@ -43,7 +48,8 @@ export class VuelosController {
     @Param('passengerId') passengerId: string,
   ) {
     const pasajero = await this.passengerService.uno(passengerId);
-    if (!pasajero) throw new Error('Pasajero no encontrado');
+    if (!pasajero)
+      throw new HttpException('Passenger not found', HttpStatus.NOT_FOUND);
     return this.vuelosService.insertarPasajero(vueloId, passengerId);
   }
 }

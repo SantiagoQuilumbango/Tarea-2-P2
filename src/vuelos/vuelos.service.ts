@@ -15,10 +15,10 @@ export class VuelosService {
     return nuevoVuelo.save();
   }
   todos(): Promise<IVuelos[]> {
-    return this.model.find().exec();
+    return this.model.find().populate('passengers');
   }
   uno(id: string): Promise<IVuelos> {
-    return this.model.findById(id);
+    return this.model.findById(id).populate('passengers');
   }
   actualizar(id: string, vuelosDTO: VuelosDTO): Promise<IVuelos> {
     return this.model.findByIdAndUpdate(id, vuelosDTO, { new: true });
@@ -34,9 +34,7 @@ export class VuelosService {
     return await this.model
       .findByIdAndUpdate(
         vueloId,
-        {
-          $addToSet: { passengers: passengerId },
-        },
+        { $addToSet: { passengers: passengerId } },
         { new: true },
       )
       .populate('passengers');
