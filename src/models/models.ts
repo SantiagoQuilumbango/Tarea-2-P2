@@ -1,3 +1,4 @@
-export const USER = { name: 'user' };
-export const PASSENGER = { name: 'passengers' };
-export const VUELOS = { name: 'vuelos' };
+export const USUARIO = {name: 'Usuarios' };
+export const ROLES = {name: 'Roles' };
+export const EMPLEADO = {name: 'Empleado'};
+export const DEPARTAMENTO = {name: 'Departamento'};

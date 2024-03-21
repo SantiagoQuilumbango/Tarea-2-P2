@@ -1,39 +1,39 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { VUELOS } from 'src/models/models';
-import { IVuelos } from './vuelos.interface';
-import { VuelosDTO } from './dto/vuelos.dto';
+import { ROLES } from 'src/models/models';
+import { IRoles } from './roles.interface';
+import { RolesDTO } from './dto/roles.dto';
 
 @Injectable()
-export class VuelosService {
+export class RolesService {
   constructor(
-    @InjectModel(VUELOS.name) private readonly model: Model<IVuelos>,
+    @InjectModel(ROLES.name) private readonly model: Model<IRoles>,
   ) {}
-  insertar(vuelosDTO: VuelosDTO): Promise<IVuelos> {
-    const nuevoVuelo = new this.model(vuelosDTO);
-    return nuevoVuelo.save();
+  insertar(rolesDTO: RolesDTO): Promise<IRoles> {
+    const nuevoRol = new this.model(rolesDTO);
+    return nuevoRol.save();
   }
-  todos(): Promise<IVuelos[]> {
+  todos(): Promise<IRoles[]> {
     return this.model.find().populate('passengers');
   }
-  uno(id: string): Promise<IVuelos> {
+  uno(id: string): Promise<IRoles> {
     return this.model.findById(id).populate('passengers');
   }
-  actualizar(id: string, vuelosDTO: VuelosDTO): Promise<IVuelos> {
-    return this.model.findByIdAndUpdate(id, vuelosDTO, { new: true });
+  actualizar(id: string, rolesDTO: RolesDTO): Promise<IRoles> {
+    return this.model.findByIdAndUpdate(id, rolesDTO, { new: true });
   }
   async eliminar(id: string) {
     await this.model.findByIdAndDelete(id);
     return { status: HttpStatus.OK, msg: 'Usuario eliminado' };
   }
   async insertarPasajero(
-    vueloId: string,
+    rolId: string,
     passengerId: string,
-  ): Promise<IVuelos> {
+  ): Promise<IRoles> {
     return await this.model
       .findByIdAndUpdate(
-        vueloId,
+        rolId,
         { $addToSet: { passengers: passengerId } },
         { new: true },
       )
